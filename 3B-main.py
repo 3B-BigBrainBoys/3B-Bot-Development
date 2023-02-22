@@ -3,28 +3,48 @@
 import os
 import discord
 from dotenv import load_dotenv
+from discord.ext import commands
+from discord.ext.commands.errors import BadArgument
+import random
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-client = discord.Client(intents=discord.Intents.default())
+bot = commands.Bot(command_prefix='*')
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'{client.user} has connected to Discord!')
+    print(f'{bot.user} has connected to Discord!')
 
-@client.event
-async def on_message(message):
-    if message.content.startswith('Hi'):
-        channel = message.channel
-        await channel.send('Say hello!')
+@bot.command(name='dice')
+async def dice(ctx, sides=6, amount=1):
+    if sides < 4:
+        await ctx.send(
+        '''Please enter 4 or more sides (default = 6).
+Command syntax: $dice [sides] [dice]''')
+    elif amount < 1:
+        await ctx.send(
+            '''Please enter 1 or more dice (default 1).'''
+        )
+    else:
+        await ctx.send('Rolling a %s sided die %d time(s)...' % (sides, amount))
+        s = ""
+        for i in range(amount):
+            newNum = (random.randrange(1, sides + 1))
+            s += str(newNum) + " "
+        await ctx.send(s)
 
-        def check(m):
-            return m.content == 'hello' and m.channel == channel
+@dice.error
+async def dice_error(ctx, error):
+    await ctx.send("Please only use whole numbers.")
 
-        msg = await client.wait_for('message', check=check)
-        await channel.send(f'Hello {msg.author}!')
+@bot.command(name='shutdown')
+@commands.is_owner()
+async def stop(ctx):
+    await ctx.send('Scoobert is now going offline...')
+    await ctx.bot.logout()
+    quit()
 
-client.run(TOKEN)
+bot.run(TOKEN)
 
 
 # Testing version #
