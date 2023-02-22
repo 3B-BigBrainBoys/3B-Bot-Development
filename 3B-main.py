@@ -9,13 +9,17 @@ import random
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-bot = commands.Bot(command_prefix='*')
+bot = commands.Bot(command_prefix='$')
 
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
 
-@bot.command(name='dice')
+@bot.command()
+async def dosomething(ctx):
+    await ctx.send("I did something")
+
+@bot.command(name='rolldice')
 async def dice(ctx, sides=6, amount=1):
     if sides < 4:
         await ctx.send(
@@ -35,12 +39,12 @@ Command syntax: $dice [sides] [dice]''')
 
 @dice.error
 async def dice_error(ctx, error):
-    await ctx.send("Please only use whole numbers.")
+    await ctx.send("Please use smaller numbers and keep entries as integers.")
 
 @bot.command(name='shutdown')
 @commands.is_owner()
 async def stop(ctx):
-    await ctx.send('Scoobert is now going offline...')
+    await ctx.send('Bot is now going offline...')
     await ctx.bot.logout()
     quit()
 
