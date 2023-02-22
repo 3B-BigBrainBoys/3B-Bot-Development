@@ -14,10 +14,9 @@ async def on_ready():
 
 client.run(TOKEN)
 
+
+# Testing version #
 # These
-# Are
-# My
-# Six
-# Lines
-# :)
-# Testing version #1
+# are
+# my
+# line
