@@ -14,10 +14,4 @@ async def on_ready():
 
 client.run(TOKEN)
 
-# These
-# Are
-# My
-# Six
-# Lines
-# :)
-# Testing version #1
+# Testing merge conflict
