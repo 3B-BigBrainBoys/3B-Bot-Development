@@ -32,7 +32,14 @@ async def whoami(ctx):
 async def on_message(message):
     if '69' in message.content:
         await message.channel.send("Nice.")
-        await bot.process_commands(message)
+
+@bot.event
+async def on_message(message):
+    if 'Good morning Experimental Bot' in message.content:
+        await message.channel.send("Good morning.")
+
+
+
 
 @bot.command(name='rolldice')
 async def dice(ctx, sides=6, amount=1):
