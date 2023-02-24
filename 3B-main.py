@@ -14,6 +14,10 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 bot = commands.Bot(command_prefix='$', intents=intents)
 
+def is_developer(name):
+    if name in ["neuby#9514", "NiteLite#2686"]:
+        return True
+    return False
 
 @bot.event
 async def on_ready():
@@ -40,7 +44,7 @@ async def on_message(message):
         await message.channel.send("Nice.")
     if 'Good morning Experimental Bot' in message.content:
         await message.channel.send("Good morning.")
-    bot.process_commands(message)
+    await bot.process_commands(message)
 
 
 
@@ -70,11 +74,13 @@ async def dice_error(ctx, error):
 
 
 @bot.command(name='shutdown')
-@commands.is_owner()
 async def stop(ctx):
-    await ctx.send('Bot is now going offline...')
-    await ctx.bot.close()
-    quit()
+    if is_developer(ctx.author):
+        await ctx.send('Bot is now going offline...')
+        await ctx.bot.close()
+        quit()
+    else:
+        await ctx.send("This command is for devs only")
 
 
 
@@ -82,10 +88,13 @@ def restart_bot():
   os.execv(sys.executable, ['python'] + sys.argv)
 
 @bot.command(name= 'restart')
-@commands.is_owner()
 async def restart(ctx):
-  await ctx.send("Restarting bot...")
-  restart_bot()
+    if is_developer(ctx.author):
+        await ctx.send("Restarting bot...")
+        restart_bot()
+    else:
+        await ctx.send("This command is for devs only")
+
 
 
 
