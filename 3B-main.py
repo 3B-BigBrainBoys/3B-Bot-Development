@@ -40,6 +40,7 @@ async def on_message(message):
         await message.channel.send("Nice.")
     if 'Good morning Experimental Bot' in message.content:
         await message.channel.send("Good morning.")
+    bot.process_commands(message)
 
 
 
