@@ -8,13 +8,14 @@ from discord.ext import commands
 from discord.ext.commands.errors import BadArgument
 import random
 
+#param intents; 
 intents = discord.Intents.all()
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 bot = commands.Bot(command_prefix='$', intents=intents)
 
-def is_developer(name):
+def isDeveloper(name):
     if name in ["neuby#9514", "NiteLite#2686"]:
         return True
     return False
@@ -23,20 +24,26 @@ def is_developer(name):
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
 
-
-
 @bot.command()
 async def echo(ctx, *msg):
     msg = ' '.join(msg)
     await ctx.send(msg)
 
-
-
 @bot.command(name='whoami')
 async def whoami(ctx):
     await ctx.send(f"You are: {ctx.author}")
 
+@bot.command(name='shutdown')
+async def stop(ctx):
+    if isDeveloper(ctx.author):
+        await ctx.send('Bot is now going offline...')
+        await ctx.bot.close()
+        quit()
+    else:
+        await ctx.send("You shall not pass!")
 
+
+    
 
 @bot.event
 async def on_message(message):
@@ -75,7 +82,7 @@ async def dice_error(ctx, error):
 
 @bot.command(name='shutdown')
 async def stop(ctx):
-    if is_developer(ctx.author):
+    if isDeveloper(ctx.author):
         await ctx.send('Bot is now going offline...')
         await ctx.bot.close()
         quit()
@@ -89,7 +96,7 @@ def restart_bot():
 
 @bot.command(name= 'restart')
 async def restart(ctx):
-    if is_developer(ctx.author):
+    if isDeveloper(ctx.author):
         await ctx.send("Restarting bot...")
         restart_bot()
     else:
