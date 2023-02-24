@@ -38,9 +38,6 @@ async def whoami(ctx):
 async def on_message(message):
     if '69' in message.content:
         await message.channel.send("Nice.")
-
-@bot.event
-async def on_message(message):
     if 'Good morning Experimental Bot' in message.content:
         await message.channel.send("Good morning.")
 
