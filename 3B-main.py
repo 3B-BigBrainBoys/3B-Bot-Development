@@ -28,6 +28,11 @@ async def echo(ctx, *msg):
 async def whoami(ctx):
     await ctx.send(f"You are: {ctx.author}")
 
+@bot.event(name='69')
+async def on_message(message):
+    if '69' in message.content:
+        await bot.send("nice.")
+
 @bot.command(name='rolldice')
 async def dice(ctx, sides=6, amount=1):
     if sides < 4:
