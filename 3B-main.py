@@ -1,4 +1,4 @@
-# Main file for bot
+# Main file for 3B
 # bot.py
 import os
 import sys
