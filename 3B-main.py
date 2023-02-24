@@ -16,7 +16,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 bot = commands.Bot(command_prefix='$', intents=intents)
 
 def isDeveloper(name):
-    if name in ["neuby#9514", "NiteLite#2686"]:
+    if str(name) in ["neuby#9514", "NiteLite#2686"]:
         return True
     return False
 
@@ -32,16 +32,6 @@ async def echo(ctx, *msg):
 @bot.command(name='whoami')
 async def whoami(ctx):
     await ctx.send(f"You are: {ctx.author}")
-
-@bot.command(name='shutdown')
-async def stop(ctx):
-    if isDeveloper(ctx.author):
-        await ctx.send('Bot is now going offline...')
-        await ctx.bot.close()
-        quit()
-    else:
-        await ctx.send("You shall not pass!")
-
 
     
 
@@ -79,18 +69,6 @@ async def dice_error(ctx, error):
     await ctx.send("Please use smaller numbers and keep entries as integers.")
 
 
-
-@bot.command(name='shutdown')
-async def stop(ctx):
-    if isDeveloper(ctx.author):
-        await ctx.send('Bot is now going offline...')
-        await ctx.bot.close()
-        quit()
-    else:
-        await ctx.send("This command is for devs only")
-
-
-
 def restart_bot(): 
   os.execv(sys.executable, ['python'] + sys.argv)
 
@@ -101,9 +79,17 @@ async def restart(ctx):
         await ctx.send("Restarting bot...")
         restart_bot()
     else:
-        await ctx.send("This command is for devs only")
+        await ctx.send("You shall not pass!")
+    await ctx.send(ctx.author)
 
-
-
+@bot.command(name='shutdown')
+async def stop(ctx):
+    if isDeveloper(ctx.author):
+        await ctx.send('Bot is now going offline...')
+        await ctx.bot.close()
+        quit()
+    else:
+        await ctx.send("You shall not pass!")
+    await ctx.send(ctx.author)
 
 bot.run(TOKEN)
