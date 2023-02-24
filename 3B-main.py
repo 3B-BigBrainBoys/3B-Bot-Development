@@ -95,6 +95,7 @@ def restart_bot():
   os.execv(sys.executable, ['python'] + sys.argv)
 
 @bot.command(name= 'restart')
+@commands.is_owner()
 async def restart(ctx):
     if isDeveloper(ctx.author):
         await ctx.send("Restarting bot...")
