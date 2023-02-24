@@ -19,12 +19,14 @@ async def on_ready():
     print(f'{bot.user} has connected to Discord!')
 
 
-
 @bot.command()
-async def echo(ctx, msg):
+async def echo(ctx, *msg):
+    msg = ' '.join(msg)
     await ctx.send(msg)
 
-
+@bot.command(name='whoami')
+async def whoami(ctx):
+    await ctx.send(f"You are: {ctx.author}")
 
 @bot.command(name='rolldice')
 async def dice(ctx, sides=6, amount=1):
@@ -74,4 +76,3 @@ bot.run(TOKEN)
 # are
 # my
 # line
-# Testing merge conflict
