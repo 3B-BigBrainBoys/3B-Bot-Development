@@ -33,16 +33,6 @@ async def echo(ctx, *msg):
 async def whoami(ctx):
     await ctx.send(f"You are: {ctx.author}")
 
-@bot.command(name='shutdown')
-async def stop(ctx):
-    if isDeveloper(ctx.author):
-        await ctx.send('Bot is now going offline...')
-        await ctx.bot.close()
-        quit()
-    else:
-        await ctx.send("You shall not pass!")
-
-
     
 
 @bot.event
@@ -79,18 +69,6 @@ async def dice_error(ctx, error):
     await ctx.send("Please use smaller numbers and keep entries as integers.")
 
 
-
-@bot.command(name='shutdown')
-async def stop(ctx):
-    if isDeveloper(ctx.author):
-        await ctx.send('Bot is now going offline...')
-        await ctx.bot.close()
-        quit()
-    else:
-        await ctx.send("This command is for devs only")
-
-
-
 def restart_bot(): 
   os.execv(sys.executable, ['python'] + sys.argv)
 
@@ -100,9 +78,16 @@ async def restart(ctx):
         await ctx.send("Restarting bot...")
         restart_bot()
     else:
-        await ctx.send("This command is for devs only")
+        await ctx.send("You shall not pass!")
 
-
+@bot.command(name='shutdown')
+async def stop(ctx):
+    if isDeveloper(ctx.author):
+        await ctx.send('Bot is now going offline...')
+        await ctx.bot.close()
+        quit()
+    else:
+        await ctx.send("You shall not pass!")
 
 
 bot.run(TOKEN)
