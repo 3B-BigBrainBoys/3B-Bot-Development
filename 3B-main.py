@@ -16,7 +16,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 bot = commands.Bot(command_prefix='$', intents=intents)
 
 def isDeveloper(name):
-    if name in ["neuby#9514", "NiteLite#2686"]:
+    if str(name) in ["neuby#9514", "NiteLite#2686"]:
         return True
     return False
 
@@ -79,6 +79,7 @@ async def restart(ctx):
         restart_bot()
     else:
         await ctx.send("You shall not pass!")
+    await ctx.send(ctx.author)
 
 @bot.command(name='shutdown')
 async def stop(ctx):
@@ -88,6 +89,6 @@ async def stop(ctx):
         quit()
     else:
         await ctx.send("You shall not pass!")
-
+    await ctx.send(ctx.author)
 
 bot.run(TOKEN)
