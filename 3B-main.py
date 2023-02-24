@@ -69,9 +69,3 @@ async def restart(ctx):
   restart_bot()
 
 bot.run(TOKEN)
-
-
-# Testing version #
-# These
-# are
-# my
