@@ -14,9 +14,11 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 bot = commands.Bot(command_prefix='$', intents=intents)
 
+
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
+
 
 
 @bot.command()
@@ -24,15 +26,20 @@ async def echo(ctx, *msg):
     msg = ' '.join(msg)
     await ctx.send(msg)
 
+
+
 @bot.command(name='whoami')
 async def whoami(ctx):
     await ctx.send(f"You are: {ctx.author}")
+
+
 
 @bot.event
 async def on_message(message):
     if '69' in message.content:
         await message.channel.send("Nice.")
-        await bot.process_commands(message)
+
+
 
 @bot.command(name='rolldice')
 async def dice(ctx, sides=6, amount=1):
@@ -65,6 +72,8 @@ async def stop(ctx):
     await ctx.bot.close()
     quit()
 
+
+
 def restart_bot(): 
   os.execv(sys.executable, ['python'] + sys.argv)
 
@@ -73,5 +82,7 @@ def restart_bot():
 async def restart(ctx):
   await ctx.send("Restarting bot...")
   restart_bot()
+
+
 
 bot.run(TOKEN)
