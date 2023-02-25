@@ -33,7 +33,12 @@ async def echo(ctx, *msg):
 async def whoami(ctx):
     await ctx.send(f"You are: {ctx.author}")
 
-    
+@bot.event
+async def on_message(message):
+    if 'rawr' in message.content:
+        await message.channel.send('x3 *nuzzles*')
+    await bot.process_commands(message)
+
 
 @bot.event
 async def on_message(message):
