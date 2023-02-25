@@ -20,19 +20,11 @@ def isDeveloper(name):
         return True
     return False
 
+# Bot events
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
     print(f'Running on version: {discord.__version__}')
-
-@bot.command()
-async def echo(ctx, *msg):
-    msg = ' '.join(msg)
-    await ctx.send(msg)
-
-@bot.command(name='whoami')
-async def whoami(ctx):
-    await ctx.send(f"You are: {ctx.author}")
 
 @bot.event
 async def on_message(message):
@@ -44,9 +36,18 @@ async def on_message(message):
         await message.channel.send("x3 *nuzzles*")
     await bot.process_commands(message)
 
+# Basic Text Commands
+@bot.command()
+async def echo(ctx, *msg):
+    msg = ' '.join(msg)
+    await ctx.send(msg)
+
+@bot.command(name='whoami')
+async def whoami(ctx):
+    await ctx.send(f"You are: {ctx.author}")
 
 
-
+# Dice roll command
 @bot.command(name='rolldice')
 async def dice(ctx, sides=6, amount=1):
     if sides < 4:
@@ -70,6 +71,7 @@ async def dice_error(ctx, error):
     await ctx.send("Please use smaller numbers and keep entries as integers.")
 
 
+# Restart and shutdown functions for Developers
 def restart_bot(): 
   os.execv(sys.executable, ['python'] + sys.argv)
 
