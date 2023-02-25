@@ -73,13 +73,11 @@ def restart_bot():
   os.execv(sys.executable, ['python'] + sys.argv)
 
 @bot.command(name= 'restart')
-@commands.is_owner()
 async def restart(ctx):
     if isDeveloper(ctx.author):
         await ctx.send("Restarting bot...")
         restart_bot()
-    else:
-        await ctx.send("You shall not pass!")
+    await ctx.send("You shall not pass!")
     await ctx.send(ctx.author)
 
 @bot.command(name='shutdown')
@@ -88,8 +86,7 @@ async def stop(ctx):
         await ctx.send('Bot is now going offline...')
         await ctx.bot.close()
         quit()
-    else:
-        await ctx.send("You shall not pass!")
+    await ctx.send("You shall not pass!")
     await ctx.send(ctx.author)
 
 bot.run(TOKEN)
