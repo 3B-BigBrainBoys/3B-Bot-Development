@@ -23,6 +23,7 @@ def isDeveloper(name):
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
+    print(f'Running on version: {discord.__version__}')
 
 @bot.command()
 async def echo(ctx, *msg):
