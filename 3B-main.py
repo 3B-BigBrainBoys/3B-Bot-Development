@@ -36,17 +36,12 @@ async def whoami(ctx):
 
 @bot.event
 async def on_message(message):
-    if 'rawr' in message.content:
-        await message.channel.send('x3 *nuzzles*')
-    await bot.process_commands(message)
-
-
-@bot.event
-async def on_message(message):
     if '69' in message.content:
         await message.channel.send("Nice.")
     if 'Good morning Experimental Bot' in message.content:
         await message.channel.send("Good morning.")
+    if 'rawr' in message.content:
+        await message.channel.send("x3 *nuzzles*")
     await bot.process_commands(message)
 
 
