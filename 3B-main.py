@@ -1,5 +1,6 @@
 # Main file for 3B
 # bot.py
+import asyncio
 import os
 import sys
 import discord
@@ -20,12 +21,17 @@ def isDeveloper(name):
         return True
     return False
 
-# Bot events
+# Bot startup
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
     print(f'Running on version: {discord.__version__}')
+    # Load cogs
+    for filename in os.listdir('./cogs'):
+        if filename.endswith('.py'):
+            await bot.load_extension(f"cogs.{filename[:-3]}")
 
+# Bot events
 @bot.event
 async def on_message(message):
     if '69' in message.content:
@@ -93,3 +99,4 @@ async def stop(ctx):
     await ctx.send(ctx.author)
 
 bot.run(TOKEN)
+
