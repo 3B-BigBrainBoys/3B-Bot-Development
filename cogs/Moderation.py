@@ -9,6 +9,7 @@ class Moderation(commands.Cog):
         self.bot=bot
 
     @commands.command()
+    # DMs command author with guild member list
     async def memberlist(self, ctx, user:discord.Member=None):
         if user == None:
             user = ctx.author
@@ -26,7 +27,7 @@ class Moderation(commands.Cog):
                     member discord tags
                     """
         file.close()
-        await user.send(file=discord.File(r'C:\Users\kmneu\Documents\3B-Bot\3B-Bot-Development\memberlist.txt'))
+        await user.send(file=discord.File('./memberlist.txt'))
         if os.path.exists('./memberlist.txt'):
             os.remove('./memberlist.txt')
         else:
