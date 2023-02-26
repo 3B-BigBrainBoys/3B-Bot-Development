@@ -10,7 +10,7 @@ class voice(commands.Cog):
     @commands.command()    
     async def join(self, ctx):
         if ctx.voice_client != None:
-            await ctx.move_to(ctx.voice.author.voice.channel)
+            await ctx.voice_client.move_to(ctx.author.voice.channel)
         else:
             channel = ctx.author.voice.channel
             await channel.connect()
