@@ -15,7 +15,7 @@ class Music(commands.Cog):
         await self.bot.wait_until_ready()
 
         await wavelink.NodePool.create_node(bot=self.bot,
-                                            host='3.143.168.182',
+                                            host='3.133.104.106',
                                             port=2333,
                                             password='youtube3B')
 
