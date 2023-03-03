@@ -5,7 +5,6 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 
-#param intents; 
 intents = discord.Intents.all()
 
 load_dotenv()
@@ -17,7 +16,7 @@ bot = commands.Bot(command_prefix='$', intents=intents)
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
     print(f'Running on version: {discord.__version__}')
-    # Load cogs
+    # For each cog in the /cog directory, load the cog
     for filename in os.listdir('./cogs'):
         if filename.endswith('.py'):
             await bot.load_extension(f"cogs.{filename[:-3]}")

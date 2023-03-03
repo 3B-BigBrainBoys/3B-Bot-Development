@@ -11,8 +11,8 @@ class Developer(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
 
-    def isDeveloper(self, name):
-        if str(name) in ["neuby#9514", "NiteLite#2686"]:
+    def isDeveloper(self, _id):
+        if _id in [261662217424994306, 270711617686208513]:
             return True
         return False
 
@@ -22,15 +22,16 @@ class Developer(commands.Cog):
 
     @commands.command(name='restart')
     async def restart(self, ctx):
-        if self.isDeveloper(ctx.author):
+        if self.isDeveloper(ctx.author.id):
             await ctx.send("Restarting bot...")
+            self.bot.close()
             self.restart_bot()
         await ctx.send(get_gif('you shall not pass', 25))
         await ctx.send("You shall not pass!")
 
     @commands.command(name='shutdown')
     async def stop(self, ctx):
-        if self.isDeveloper(ctx.author):
+        if self.isDeveloper(ctx.author.id):
             await ctx.send('Bot is now going offline...')
             await ctx.bot.close()
             quit()

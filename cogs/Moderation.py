@@ -11,9 +11,10 @@ class Moderation(commands.Cog):
     @commands.command()
     # DMs command author with guild member list
     async def memberlist(self, ctx, user:discord.Member=None):
+        filename = str(ctx.guild)+'.txt'
         if user == None:
             user = ctx.author
-        with open('memberlist.txt', 'w') as file:
+        with open(filename, 'w') as file:
             file.write(f'Member list for {ctx.guild} server:\n')
             for member in ctx.guild.members:
                 try:
@@ -27,9 +28,9 @@ class Moderation(commands.Cog):
                     member discord tags
                     """
         file.close()
-        await user.send(file=discord.File('./memberlist.txt'))
-        if os.path.exists('./memberlist.txt'):
-            os.remove('./memberlist.txt')
+        await user.send(file=discord.File('./'+filename))
+        if os.path.exists('./'+filename):
+            os.remove('./'+filename)
         else:
             await user.send("File not found")
 
