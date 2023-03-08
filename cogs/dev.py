@@ -7,8 +7,8 @@ import discord
 from discord.ext import commands
 from getgif import get_gif
 
-def isDeveloper(_id):
-    if _id in [261662217424994306, 270711617686208513]:
+def isDeveloper(id):
+    if id in [261662217424994306, 270711617686208513, 252514565001052160]:
         return True
     return False
 
