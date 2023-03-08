@@ -25,7 +25,7 @@ class Music(commands.Cog):
         print(f'Node: <{node.identifier}> is ready!')
 
     @commands.command()
-    async def play(self, ctx: commands.Context, *, search: wavelink.YouTubeTrack):
+    async def play(self, ctx: commands.Context, *, search: wavelink.YouTubeTrack = None):
         """Play a song with the given search query.
         If not connected, connect to our voice channel.
         """
@@ -33,10 +33,22 @@ class Music(commands.Cog):
             vc: wavelink.Player = await ctx.author.voice.channel.connect(cls=wavelink.Player)
         else:
             vc: wavelink.Player = ctx.voice_client
-        try:
-            await vc.play(search)
-        except TypeError:
-            await ctx.send("Something went wrong: Try a different song or try again")
+        if vc.is_playing():
+            await vc.resume()
+        else:
+            try:
+                await ctx.send(f'Now playing: '+search.info['uri'])
+                await vc.play(search)
+            except TypeError:
+                await ctx.send("Something went wrong: Try a different song or try again")
+
+    @commands.command()
+    async def pause(self, ctx: commands.Context):
+        vc: wavelink.Player = ctx.voice_client
+        if vc.is_paused():
+            pass
+        else:
+            await vc.pause()
 
 async def setup(bot):
     await bot.add_cog(Music(bot))
