@@ -3,7 +3,7 @@
 import os
 import discord
 from discord.ext import commands
-from dev import isDeveloper
+from isDeveloper import isDeveloper
 
 
 class Moderation(commands.Cog):

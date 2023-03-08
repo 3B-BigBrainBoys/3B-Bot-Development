@@ -6,11 +6,7 @@ import random
 import discord
 from discord.ext import commands
 from getgif import get_gif
-
-def isDeveloper(id):
-    if id in [261662217424994306, 270711617686208513, 252514565001052160]:
-        return True
-    return False
+from isDeveloper import isDeveloper
 
 class Developer(commands.Cog):
     def __init__(self,bot):
