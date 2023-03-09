@@ -37,7 +37,7 @@ class Moderation(commands.Cog):
             await user.send("File not found")
 
     @commands.command(name='ban')
-    async def Ban(self,ctx, member: discord.Member,reason = None):
+    async def ban(self,ctx, member: discord.Member,reason = None):
         if isDeveloper(ctx.author.id):
             await member.ban()
             await ctx.send(embed=discord.Embed(
@@ -47,7 +47,7 @@ class Moderation(commands.Cog):
             await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
 
     @commands.command(name='mute')
-    async def Mute(self,ctx, member: discord.Member,reason = None):
+    async def mute(self,ctx, member: discord.Member,reason = None):
         time = 300
         if isDeveloper(ctx.author.id):
             await member.timeout(timedelta(seconds=time))
