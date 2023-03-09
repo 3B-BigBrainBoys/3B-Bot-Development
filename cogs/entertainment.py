@@ -45,6 +45,24 @@ class Entertainment(commands.Cog):
     async def dice_error(self, ctx, error):
         await ctx.send("Please use smaller numbers and keep entries as integers.")
 
+    #Garbage fake rock paper scissors game to test for chained input from a single user
+
+    @commands.command(name='RPS')
+    async def dice(self, ctx):
+        await ctx.send('Rock, Paper, Scissors...')
+
+        def check(msg):
+            return msg.author == ctx.author and msg.channel == ctx.channel and \
+            msg.content.lower() in ["rock", "paper", "scissors"]
+
+        msg = await commands.wait_for("message", check=check)
+
+        if msg.content.lower() == "rock":
+            await ctx.send("Paper, you lose!")
+        elif msg.content.lower() == "paper":
+            await ctx.send("Scissors, you lose!")
+        else :
+            await ctx.send("Rock, you lose!")
 
 async def setup(bot):
     await bot.add_cog(Entertainment(bot))
