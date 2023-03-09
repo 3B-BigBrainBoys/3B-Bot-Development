@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import wavelink
+import datetime
 
 class BotPlayer(wavelink.Player):
     
@@ -51,25 +52,25 @@ class Music(commands.Cog):
         elif vc.is_playing():
 
             vc.queue.put(item=search)
-
+            track_duration = str(datetime.timedelta(seconds=search.duration))
             await ctx.send(embed=discord.Embed(
                 title=search.title,
                 url=search.uri,
-                description = f"Queued {search.title} in {vc.channel}"
+                description = f"Queued {search.title} in {vc.channel}. \nDuration: {track_duration}"
             ))
         
 
         else:
             try:
                 await vc.play(search)
-
+                track_duration = str(datetime.timedelta(seconds=search.duration))
                 await ctx.send(embed=discord.Embed(
                 title=search.title,
                 url=search.uri,
-                description = f"Now playing {search.title} in {vc.channel}"
-            ))
+                description = f"Now playing {search.title} in {vc.channel}. \nDuration: {track_duration}"
+                ))
             except TypeError:
-                await ctx.send("Something went wrong: Try a different song or try again")
+                pass
 
     @commands.command()
     async def pause(self, ctx: commands.Context):  
