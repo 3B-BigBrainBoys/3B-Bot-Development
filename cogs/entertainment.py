@@ -13,13 +13,13 @@ class Entertainment(commands.Cog):
         await ctx.send(get_gif(arg, limit))
 
     @commands.Cog.listener()
-    async def on_message(self, message):
-        if '69' in message.content:
+    async def on_message(self,message):
+        if '69' in message.content and message.author.id !=1077964909318508564:
             await message.channel.send(get_gif('69 nice', 20))
             await message.channel.send("Nice.")
-        if 'Good morning Experimental Bot' in message.content:
+        if 'Good morning Experimental Bot' in message.content and message.author.id !=1077964909318508564:
             await message.channel.send("Good morning.")
-        if 'rawr' in message.content:
+        if 'rawr' in message.content and message.author.id !=1077964909318508564:
             await message.channel.send(get_gif('uwu anime', 20))
             await message.channel.send("x3 *nuzzles*")
 
