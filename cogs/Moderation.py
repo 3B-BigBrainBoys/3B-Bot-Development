@@ -46,8 +46,8 @@ class Moderation(commands.Cog):
         else:
             await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
 
-    @commands.command(name='Unban')
-    async def Unban(self,ctx, member: discord.Member,reason = None):
+    @commands.command(name='unban')
+    async def unban(self,ctx, member: discord.Member, reason = None):
         if isDeveloper(ctx.author.id):
             await member.unban()
             await ctx.send(f"{member.name} has been unbanned")
