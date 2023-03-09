@@ -50,7 +50,5 @@ class Music(commands.Cog):
         else:
             await vc.pause()
 
-
-
 async def setup(bot):
     await bot.add_cog(Music(bot))
