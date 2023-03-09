@@ -37,9 +37,9 @@ class Moderation(commands.Cog):
             await user.send("File not found")
 
     @commands.command(name='Ban')
-    async def Ban(self,ctx,member: discord.member,reason = None):
+    async def Ban(self,ctx, member: discord.Member,reason = None):
         if isDeveloper(ctx.author.id):
-            await member.ban(reason = reason)
+            await member.ban()
             await ctx.send(f"{member.name} has been banned from this server due to: {reason}")
         else:
             await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
