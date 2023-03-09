@@ -3,6 +3,8 @@
 import os
 import discord
 from discord.ext import commands
+from dev import isDeveloper
+
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
@@ -33,6 +35,16 @@ class Moderation(commands.Cog):
             os.remove('./'+filename)
         else:
             await user.send("File not found")
+
+    @commands.command(name='Ban')
+    async def Ban(self,ctx,member: discord.member,reason = None):
+        if isDeveloper(ctx.author.id):
+            await member.ban(reason = reason)
+            await ctx.send(f"{member.name} has been banned from this server due to: {reason}")
+        else:
+            await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
+            
+
 
 
 async def setup(bot):

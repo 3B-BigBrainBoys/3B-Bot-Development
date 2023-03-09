@@ -7,14 +7,14 @@ import discord
 from discord.ext import commands
 from getgif import get_gif
 
+def isDeveloper(_id):
+    if _id in [261662217424994306, 270711617686208513]:
+        return True
+    return False
+
 class Developer(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
-
-    def isDeveloper(self, _id):
-        if _id in [261662217424994306, 270711617686208513]:
-            return True
-        return False
 
     # Restart and shutdown functions for Developers
     def restart_bot(self): 
@@ -22,7 +22,7 @@ class Developer(commands.Cog):
 
     @commands.command(name='restart')
     async def restart(self, ctx):
-        if self.isDeveloper(ctx.author.id):
+        if isDeveloper(ctx.author.id):
             await ctx.send("Restarting bot...")
             self.bot.close()
             self.restart_bot()
@@ -31,7 +31,7 @@ class Developer(commands.Cog):
 
     @commands.command(name='shutdown')
     async def stop(self, ctx):
-        if self.isDeveloper(ctx.author.id):
+        if isDeveloper(ctx.author.id):
             await ctx.send('Bot is now going offline...')
             await ctx.bot.close()
             quit()
