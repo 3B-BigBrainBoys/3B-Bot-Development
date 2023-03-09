@@ -70,6 +70,7 @@ class Music(commands.Cog):
                 description = f"Now playing {search.title} in {vc.channel}. \nDuration: {track_duration}"
                 ))
             except TypeError:
+                # Not sure how to handle exceptions yet
                 pass
 
     @commands.command()
