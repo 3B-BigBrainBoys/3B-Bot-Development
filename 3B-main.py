@@ -8,8 +8,8 @@ from discord.ext import commands
 intents = discord.Intents.all()
 
 load_dotenv()
-TOKEN = os.getenv('EXPERIMENTAL_TOKEN')
-bot = commands.Bot(command_prefix='$', intents=intents)
+TOKEN = os.getenv('DISCORD_TOKEN')
+bot = commands.Bot(command_prefix='&', intents=intents)
 
 # Bot startup
 @bot.event
