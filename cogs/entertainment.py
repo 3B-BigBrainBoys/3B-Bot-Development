@@ -45,5 +45,6 @@ class Entertainment(commands.Cog):
     async def dice_error(self, ctx, error):
         await ctx.send("Please use smaller numbers and keep entries as integers.")
 
+
 async def setup(bot):
     await bot.add_cog(Entertainment(bot))

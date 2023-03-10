@@ -4,7 +4,7 @@ import os
 import discord
 from discord.ext import commands
 from isDeveloper import isDeveloper
-
+from datetime import timedelta
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
@@ -46,13 +46,25 @@ class Moderation(commands.Cog):
         else:
             await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
 
-    @commands.command(name='Unban')
-    async def Unban(self,ctx, member: discord.Member,reason = None):
+    @commands.command(name='mute')
+    async def Mute(self,ctx, member: discord.Member,reason = None):
+        time = 300
         if isDeveloper(ctx.author.id):
-            await member.unban()
-            await ctx.send(f"{member.name} has been unbanned")
-        else:
-            await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
+            await member.timeout(timedelta(seconds=time))
+            await ctx.send(embed = discord.Embed(
+                title=f"{member.name} has been muted for",
+                description=f"{time} seconds"
+            ))
+
+
+
+#    @commands.command(name='Unban')
+#    async def Unban(self,ctx, member: discord.Member,reason = None):
+#        if isDeveloper(ctx.author.id):
+#            await member.unban()
+#            await ctx.send(f"{member.name} has been unbanned")
+#        else:
+#            await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
 
 
 
