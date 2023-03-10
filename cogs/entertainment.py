@@ -55,7 +55,7 @@ class Entertainment(commands.Cog):
             return msg.author == ctx.author and msg.channel == ctx.channel and \
             msg.content.lower() in ["rock", "paper", "scissors"]
 
-        msg = await commands.wait_for("message", check=check)
+        msg = await self.bot.wait_for("message", check=check)
 
         if msg.content.lower() == "rock":
             await ctx.send("Paper, you lose!")
