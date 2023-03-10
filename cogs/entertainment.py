@@ -50,21 +50,36 @@ class Entertainment(commands.Cog):
     @commands.command(name='RPS')
     async def rps(self, ctx):
         
-        msg = await ctx.send('Rock, Paper, Scissors...')
+        msg = await ctx.send(embed = discord.Embed(title='Rock, Paper, Scissors...'))
         reactions = ['🪨','📰','✂️']
         for emoji in reactions: 
             await msg.add_reaction(emoji)
 
+        botmove = random.choice(reactions)
+
         def check(reaction, user):
             return user == ctx.author and str(reaction.emoji) in reactions
         reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
-        
-        if str(reaction.emoji) == '🪨':
-            return await ctx.send("Paper, you lose!")
-        elif str(reaction.emoji) == '📰':
-            return  await ctx.send("Scissors, you lose!")
-        else:
-            return await ctx.send("Rock, you lose!")
 
+        # Tie
+        if str(reaction.emoji) == botmove:
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nIt's a tie!"))
+        
+        # Bot wins:
+        elif str(reaction.emoji) == '🪨' and botmove == '📰':
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou lose!"))
+        elif str(reaction.emoji) == '📰' and botmove == '✂️':
+            return  await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou lose!"))
+        elif str(reaction.emoji) == '✂️' and botmove == '🪨':
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou lose!"))
+        
+        # Bot wins:
+        elif str(reaction.emoji) == '📰' and botmove == '🪨':
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou win!"))
+        elif str(reaction.emoji) == '✂️' and botmove == '📰':
+            return  await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou win!"))
+        elif str(reaction.emoji) == '🪨' and botmove == '✂️':
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou win!"))
+        
 async def setup(bot):
     await bot.add_cog(Entertainment(bot))
