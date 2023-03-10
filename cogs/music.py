@@ -14,24 +14,22 @@ class Music(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.node: wavelink.Node = wavelink.Node(uri='http://localhost:2033', password="test")
         bot.loop.create_task(self.connect_nodes())
 
     async def connect_nodes(self):
         """Connect to our Lavalink nodes."""
         await self.bot.wait_until_ready()
-
-        await wavelink.NodePool.create_node(bot=self.bot,
-                                            host='LavaLink-ALB-603820264.us-east-2.elb.amazonaws.com',
-                                            port=2033,
-                                            password='youtube3B')
+        
+        await wavelink.NodePool.connect(client=self.bot, nodes=[self.node])
 
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
         """Event fired when a node has finished connecting."""
-        print(f'Node: <{node.identifier}> is ready!')
+        print(f'Node: <{node.id}> is ready!')
 
     @commands.Cog.listener()
-    async def on_wavelink_track_end(self, player, track: wavelink.Track, reason):
+    async def on_wavelink_track_end(self, player, track: wavelink.GenericTrack, reason):
 
         if not player.queue.is_empty:
 
