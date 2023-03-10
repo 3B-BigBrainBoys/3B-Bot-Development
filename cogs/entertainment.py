@@ -48,8 +48,7 @@ class Entertainment(commands.Cog):
     #Garbage fake rock paper scissors game to test for chained input from a single user
 
     @commands.command(name='RPS')
-    async def dice(self, ctx):
-        
+    async def rps(self, ctx):
         
         msg = await ctx.send('Rock, Paper, Scissors...')
         reactions = ['🪨','📰','✂️']
