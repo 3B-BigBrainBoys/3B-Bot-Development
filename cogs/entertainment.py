@@ -48,21 +48,23 @@ class Entertainment(commands.Cog):
     #Garbage fake rock paper scissors game to test for chained input from a single user
 
     @commands.command(name='RPS')
-    async def dice(self, ctx):
-        await ctx.send('Rock, Paper, Scissors...')
+    async def rps(self, ctx):
+        
+        msg = await ctx.send('Rock, Paper, Scissors...')
+        reactions = ['🪨','📰','✂️']
+        for emoji in reactions: 
+            await msg.add_reaction(emoji)
 
-        def check(msg):
-            return msg.author == ctx.author and msg.channel == ctx.channel and \
-            msg.content.lower() in ["rock", "paper", "scissors"]
-
-        msg = await self.bot.wait_for("message", check=check)
-
-        if msg.content.lower() == "rock":
-            await ctx.send("Paper, you lose!")
-        elif msg.content.lower() == "paper":
-            await ctx.send("Scissors, you lose!")
-        else :
-            await ctx.send("Rock, you lose!")
+        def check(reaction, user):
+            return user == ctx.author and str(reaction.emoji) in reactions
+        reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
+        
+        if str(reaction.emoji) == '🪨':
+            return await ctx.send("Paper, you lose!")
+        elif str(reaction.emoji) == '📰':
+            return  await ctx.send("Scissors, you lose!")
+        else:
+            return await ctx.send("Rock, you lose!")
 
 async def setup(bot):
     await bot.add_cog(Entertainment(bot))
