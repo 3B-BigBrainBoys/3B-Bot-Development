@@ -36,14 +36,23 @@ class Moderation(commands.Cog):
         else:
             await user.send("File not found")
 
-    @commands.command(name='Ban')
+    @commands.command(name='ban')
     async def Ban(self,ctx, member: discord.Member,reason = None):
         if isDeveloper(ctx.author.id):
             await member.ban()
-            await ctx.send(f"{member.name} has been banned from this server due to: {reason}")
+            await ctx.send(embed=discord.Embed(
+                title=f"{member.name} has been banned",
+                description=f"Reason: {reason}"))
         else:
             await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
-            
+
+    @commands.command(name='Unban')
+    async def Unban(self,ctx, member: discord.Member,reason = None):
+        if isDeveloper(ctx.author.id):
+            await member.unban()
+            await ctx.send(f"{member.name} has been unbanned")
+        else:
+            await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
 
 
 
