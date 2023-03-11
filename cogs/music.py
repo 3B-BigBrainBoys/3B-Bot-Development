@@ -24,10 +24,12 @@ class Music(commands.Cog):
         await self.bot.wait_until_ready()
         # Wavelink 2.0 has made connecting Nodes easier... Simply create each Node
         # and pass it to NodePool.connect with the client/bot.
-        self.node: wavelink.Node = wavelink.Node(uri='LavaLink-ALB-603820264.us-east-2.elb.amazonaws.com:2033', password='youtube3B')
+        self.node: wavelink.Node = wavelink.Node(
+            uri='LavaLink-ALB-603820264.us-east-2.elb.amazonaws.com:2033', 
+            password='youtube3B'
+            )
         await wavelink.NodePool.connect(client=self.bot, nodes=[self.node])
         self.node = wavelink.NodePool.get_node()
-        # 'LavaLink-ALB-603820264.us-east-2.elb.amazonaws.com:2033'
 
 
     @commands.Cog.listener()
@@ -45,6 +47,7 @@ class Music(commands.Cog):
     @commands.command()
     async def play(self, ctx: commands.Context, *, search: wavelink.YouTubeTrack = None):
         vc = ctx.voice_client
+        track_duration = str(datetime.timedelta(seconds=search.duration))
         
         if not ctx.voice_client:
             self.player=BotPlayer()
@@ -56,8 +59,7 @@ class Music(commands.Cog):
         elif vc.is_playing():
 
             vc.queue.put(item=search)
-            track_duration = str(datetime.timedelta(seconds=search.duration))
-
+            
             await ctx.send(embed=discord.Embed(
                 title=search.title,
                 url=search.uri,
@@ -65,19 +67,13 @@ class Music(commands.Cog):
             ))
 
         else:
-            try:
-                await vc.play(search)
-                track_duration = str(datetime.timedelta(seconds=search.duration))
-
-                await ctx.send(embed=discord.Embed(
+            await vc.play(search)
+            await ctx.send(embed=discord.Embed(
                 title=search.title,
                 url=search.uri,
                 description = f"Now playing {search.title} in {vc.channel}. \nDuration: {track_duration}"
-                ))
+            ))
 
-            except TypeError:
-                # Not sure how to handle exceptions yet
-                pass
 
     @commands.command()
     async def pause(self, ctx: commands.Context):  
