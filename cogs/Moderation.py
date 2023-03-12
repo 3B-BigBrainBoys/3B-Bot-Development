@@ -1,10 +1,24 @@
 # Cog for moderation commands
 
+#
+#
+#
+#
+#
+#
+#
+#
+
+
+
+
 import os
 import discord
 from discord.ext import commands
 from isDeveloper import isDeveloper
 from datetime import timedelta
+from random import randint
+from getgif import get_gif
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
@@ -43,6 +57,10 @@ class Moderation(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title=f"{member.name} has been banned",
                 description=f"Reason: {reason}"))
+            await member.send(embed=discord.Embed(
+                title="You have been banned",
+                description=f"Reason: {reason}"
+            ))
         else:
             await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
 
@@ -55,8 +73,23 @@ class Moderation(commands.Cog):
                 title=f"{member.name} has been muted for",
                 description=f"{time} seconds"
             ))
+            await member.send(embed=discord.Embed(
+                title="You have been temporily muted",
+                description=f"Duration: {time}\nReason: {reason}"
+                
+            ))
 
+#    @commands.command(name='Keith')
+#    async def Keith(self,ctx,param = "Cum",limit=50):
+#        await ctx.send(embed = discord.Embed(
+#            title="KEEEEEEEEEEEEEEEEEEEEEEITH",
+#        ))
+#        await ctx.send(get_gif(param,limit))
 
+    
+#    @commands.command(name='')
+#    async def ():
+        
 
 #    @commands.command(name='Unban')
 #    async def Unban(self,ctx, member: discord.Member,reason = None):
@@ -65,6 +98,35 @@ class Moderation(commands.Cog):
 #            await ctx.send(f"{member.name} has been unbanned")
 #        else:
 #            await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
+
+
+
+# AUTO MODERATION
+#
+#
+#
+#
+#
+
+    @commands.Cog.listener()
+    async def ban_on_message(self,ctx,message,member: discord.Member):
+        reason_str = "Banned for being a dweeb"
+        ban_list = ("nigger","chink","knuckledragger","moon cricket","porch monkey","ching chong",
+                    "white guilt","white privilege","n!gger","nigg","nigg3r","n!gg3r","ch!nk",
+                    "niglet","n!glet","n!gl3t")
+        if message in ban_list:
+            await member.ban(delete_message_days=7,reason=reason_str)
+            await ctx.send(embed=discord.Embed(
+                title=f"{member} banned",
+                description=f"Reason: {reason_str}"
+            ))
+    
+
+
+
+
+
+
 
 
 
