@@ -45,7 +45,7 @@ class Entertainment(commands.Cog):
     async def dice_error(self, ctx, error):
         await ctx.send("Please use smaller numbers and keep entries as integers.")
 
-    #Garbage fake rock paper scissors game to test for chained input from a single user
+    #Rock paper scissors game
 
     @commands.command(name='RPS')
     async def rps(self, ctx):
@@ -73,7 +73,7 @@ class Entertainment(commands.Cog):
         elif str(reaction.emoji) == '✂️' and botmove == '🪨':
             return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou lose!"))
         
-        # Bot wins:
+        # Player wins:
         elif str(reaction.emoji) == '📰' and botmove == '🪨':
             return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou win!"))
         elif str(reaction.emoji) == '✂️' and botmove == '📰':
