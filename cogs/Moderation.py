@@ -53,14 +53,14 @@ class Moderation(commands.Cog):
     @commands.command(name='ban')
     async def ban(self,ctx, member: discord.Member,reason = None):
         if isDeveloper(ctx.author.id):
-            await member.ban()
-            await ctx.send(embed=discord.Embed(
-                title=f"{member.name} has been banned",
-                description=f"Reason: {reason}"))
             await member.send(embed=discord.Embed(
                 title="You have been banned",
                 description=f"Reason: {reason}"
             ))
+            await member.ban()
+            await ctx.send(embed=discord.Embed(
+                title=f"{member.name} has been banned",
+                description=f"Reason: {reason}"))
         else:
             await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
 
@@ -68,10 +68,10 @@ class Moderation(commands.Cog):
     async def mute(self,ctx, member: discord.Member,reason = None,tmptime = None):
         time = int(tmptime)
         if isDeveloper(ctx.author.id):
-            await member.timeout(timedelta(seconds=time))
+            await member.timeout(timedelta(seconds=time,hours=0,days= 0,minutes= 0,weeks=0,microseconds=0,milliseconds=0),reason=reason)
             await ctx.send(embed = discord.Embed(
                 title=f"{member.name} has been muted for",
-                description=f"{time} seconds"
+                description=f"{time} seconds\nReason: {reason}"
             ))
             await member.send(embed=discord.Embed(
                 title="You have been temporily muted",
