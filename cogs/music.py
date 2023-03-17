@@ -25,7 +25,7 @@ class Music(commands.Cog):
         # Wavelink 2.0 has made connecting Nodes easier... Simply create each Node
         # and pass it to NodePool.connect with the client/bot.
         self.node: wavelink.Node = wavelink.Node(
-            uri='LavaLink-ALB-603820264.us-east-2.elb.amazonaws.com:2033', 
+            uri='ec2-3-145-16-12.us-east-2.compute.amazonaws.com:2033', 
             password='youtube3B'
             )
         await wavelink.NodePool.connect(client=self.bot, nodes=[self.node])
