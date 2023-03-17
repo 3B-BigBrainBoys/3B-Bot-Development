@@ -30,11 +30,18 @@ class voice(commands.Cog):
             await ctx.voice_client.disconnect()
         else:
             await ctx.send("Bot is not in a channel...")
-"""
-    @commands.command(brief="Plays an mp3")
-    async def play(self, ctx):
-        source = FFmpegPCMAudio('song.mp3')
-        player = ctx.voice_client.play(source)
-"""
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        vc = member.guild.voice_client
+        if not vc:
+            return
+        
+        if len(vc.channel.members) == 1:
+            await vc.disconnect()
+
+
+
+
 async def setup(bot):
     await bot.add_cog(voice(bot))

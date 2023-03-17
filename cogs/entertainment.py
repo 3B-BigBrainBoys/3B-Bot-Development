@@ -13,13 +13,13 @@ class Entertainment(commands.Cog):
         await ctx.send(get_gif(arg, limit))
 
     @commands.Cog.listener()
-    async def on_message(self, message):
-        if '69' in message.content:
+    async def on_message(self,message):
+        if '69' in message.content and message.author.id !=1077964909318508564:
             await message.channel.send(get_gif('69 nice', 20))
             await message.channel.send("Nice.")
-        if 'Good morning Experimental Bot' in message.content:
+        if 'Good morning Experimental Bot' in message.content and message.author.id !=1077964909318508564:
             await message.channel.send("Good morning.")
-        if 'rawr' in message.content:
+        if 'rawr' in message.content and message.author.id !=1077964909318508564:
             await message.channel.send(get_gif('uwu anime', 20))
             await message.channel.send("x3 *nuzzles*")
 
@@ -45,5 +45,41 @@ class Entertainment(commands.Cog):
     async def dice_error(self, ctx, error):
         await ctx.send("Please use smaller numbers and keep entries as integers.")
 
+    #Rock paper scissors game
+
+    @commands.command(name='RPS')
+    async def rps(self, ctx):
+        
+        msg = await ctx.send(embed = discord.Embed(title='Rock, Paper, Scissors...'))
+        reactions = ['🪨','📰','✂️']
+        for emoji in reactions: 
+            await msg.add_reaction(emoji)
+
+        botmove = random.choice(reactions)
+
+        def check(reaction, user):
+            return user == ctx.author and str(reaction.emoji) in reactions
+        reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
+
+        # Tie
+        if str(reaction.emoji) == botmove:
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nIt's a tie!"))
+        
+        # Bot wins:
+        elif str(reaction.emoji) == '🪨' and botmove == '📰':
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou lose!"))
+        elif str(reaction.emoji) == '📰' and botmove == '✂️':
+            return  await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou lose!"))
+        elif str(reaction.emoji) == '✂️' and botmove == '🪨':
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou lose!"))
+        
+        # Player wins:
+        elif str(reaction.emoji) == '📰' and botmove == '🪨':
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou win!"))
+        elif str(reaction.emoji) == '✂️' and botmove == '📰':
+            return  await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou win!"))
+        elif str(reaction.emoji) == '🪨' and botmove == '✂️':
+            return await msg.edit(embed = discord.Embed(title=f"Bot chose: {botmove}\nYou win!"))
+        
 async def setup(bot):
     await bot.add_cog(Entertainment(bot))
