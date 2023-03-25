@@ -8,12 +8,12 @@ class Misc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @app_commands.command()
     async def echo(self, ctx, *msg):
         msg = ' '.join(msg)
         await ctx.send(msg)
 
-    @commands.command(name='whoami')
+    @app_commands.command(name='whoami')
     async def whoami(self, ctx):
         await ctx.send(f"You are: {ctx.author}")
 
