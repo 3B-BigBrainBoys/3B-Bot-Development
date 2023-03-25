@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 from discord import FFmpegPCMAudio
+from discord import app_commands
 
 
 class voice(commands.Cog):

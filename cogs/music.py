@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands, tasks
 import wavelink
 import datetime
+from discord import app_commands
 
 class BotPlayer(wavelink.Player):
     

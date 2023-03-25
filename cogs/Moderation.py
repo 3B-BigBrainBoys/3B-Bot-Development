@@ -1,17 +1,5 @@
 # Cog for moderation commands
 
-#
-#
-#
-#
-#
-#
-#
-#
-
-
-
-
 import os
 import discord
 from discord.ext import commands
@@ -19,6 +7,7 @@ from isDeveloper import isDeveloper
 from datetime import timedelta
 from random import randint
 from getgif import get_gif
+from discord import app_commands
 
 class Moderation(commands.Cog):
     def __init__(self, bot):
@@ -78,26 +67,6 @@ class Moderation(commands.Cog):
                 description=f"Duration: {time}\nReason: {reason}"
                 
             ))
-
-#    @commands.command(name='Keith')
-#    async def Keith(self,ctx,param = "Cum",limit=50):
-#        await ctx.send(embed = discord.Embed(
-#            title="KEEEEEEEEEEEEEEEEEEEEEEITH",
-#        ))
-#        await ctx.send(get_gif(param,limit))
-
-    
-#    @commands.command(name='')
-#    async def ():
-        
-
-#    @commands.command(name='Unban')
-#    async def Unban(self,ctx, member: discord.Member,reason = None):
-#        if isDeveloper(ctx.author.id):
-#            await member.unban()
-#            await ctx.send(f"{member.name} has been unbanned")
-#        else:
-#            await ctx.send(f"YOU SHALL NOT PASS {ctx.author}")
 
 
 
