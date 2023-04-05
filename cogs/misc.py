@@ -8,7 +8,7 @@ class Misc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command()
+    @app_commands.command(name='echo')
     async def echo(self, ctx, *msg):
         msg = ' '.join(msg)
         await ctx.send(msg)
