@@ -5,6 +5,8 @@ from getgif import get_gif
 import random
 from discord import app_commands
 
+###### NOT WORKING YET ######
+
 class Entertainment(commands.Cog):
     def __init__(self, bot):
         self.bot=bot

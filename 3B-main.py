@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from discord import app_commands
 
-
 load_dotenv()
 TOKEN = os.getenv('EXPERIMENTAL_TOKEN')
 
@@ -18,13 +17,9 @@ async def on_ready():
     print(f'{bot.user} has connected to Discord!')
     print(f'Running on version: {discord.__version__}')
     [await bot.load_extension(f"cogs.{filename[:-3]}") for filename in os.listdir('./cogs') if filename.endswith('.py')]
-    for guild in bot.guilds:
-        await bot.tree.sync(guild)
     # For each cog in the /cog directory, load the cog
 
-@bot.hybrid_command()
-async def test(ctx):
-    await ctx.send("I am a slash command")
+
 
 bot.run(TOKEN)
 

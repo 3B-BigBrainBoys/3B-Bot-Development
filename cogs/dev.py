@@ -8,6 +8,8 @@ from discord.ext import commands
 from getgif import get_gif
 from isDeveloper import isDeveloper
 
+###### NOT WORKING YET ######
+
 class Developer(commands.Cog):
     def __init__(self,bot):
         self.bot=bot

@@ -9,6 +9,8 @@ from random import randint
 from getgif import get_gif
 from discord import app_commands
 
+###### NOT WORKING YET ######
+
 class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot=bot
