@@ -1,3 +1,3 @@
 # 3B-Bot-Development
-3B (Big Brain Boys), too lazy to type out big brain boys
+3B team's work on the development of a discord bot.
 
