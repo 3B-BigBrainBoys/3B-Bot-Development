@@ -71,35 +71,5 @@ class Moderation(commands.Cog):
             ))
 
 
-
-# AUTO MODERATION
-#
-#
-#
-#
-#
-
-    @commands.Cog.listener()
-    async def ban_on_message(self,ctx,message,member: discord.Member):
-        reason_str = "Banned for being a dweeb"
-        ban_list = ("nigger","chink","knuckledragger","moon cricket","porch monkey","ching chong",
-                    "white guilt","white privilege","n!gger","nigg","nigg3r","n!gg3r","ch!nk",
-                    "niglet","n!glet","n!gl3t")
-        if message in ban_list:
-            await member.ban(delete_message_days=7,reason=reason_str)
-            await ctx.send(embed=discord.Embed(
-                title=f"{member} banned",
-                description=f"Reason: {reason_str}"
-            ))
-    
-
-
-
-
-
-
-
-
-
 async def setup(bot):
     await bot.add_cog(Moderation(bot))
