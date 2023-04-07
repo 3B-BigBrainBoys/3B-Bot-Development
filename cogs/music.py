@@ -49,8 +49,9 @@ class Music(commands.Cog):
 
     @app_commands.command(name='play')
     async def play(self, interaction: discord.Interaction, track: str = None):
-        YTtrack = wavelink.YouTubeTrack
-        search = await YTtrack.convert(wavelink.YouTubeTrack, track)
+        if track != None:
+            YTtrack = wavelink.YouTubeTrack
+            search = await YTtrack.convert(wavelink.YouTubeTrack, track)
         
         guild = interaction.guild
         vc = guild.voice_client
@@ -82,19 +83,19 @@ class Music(commands.Cog):
             ))
 
 
-    # @app_commands.command('pause')
-    # async def pause(self, interaction: discord.Interaction):  
-    #     guild = interaction.guild
-    #     vc: BotPlayer = guild.voice_client
-    #     if vc:
-    #         if not vc.is_paused():
-    #             await vc.pause()
+    @app_commands.command(name='pause')
+    async def pause(self, interaction: discord.Interaction):  
+        guild = interaction.guild
+        vc: BotPlayer = guild.voice_client
+        if vc:
+            if not vc.is_paused():
+                await vc.pause()
 
-    # @app_commands.command('skip')
-    # async def skip(self, interaction: discord.Interaction):
-    #     guild = interaction.guild
-    #     vc: BotPlayer = guild.voice_client
-    #     await vc.stop()
+    @app_commands.command(name='skip')
+    async def skip(self, interaction: discord.Interaction):
+        guild = interaction.guild
+        vc: BotPlayer = guild.voice_client
+        await vc.stop()
 
 
 async def setup(bot):

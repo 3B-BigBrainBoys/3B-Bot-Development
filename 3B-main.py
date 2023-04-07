@@ -25,10 +25,6 @@ async def on_ready():
     print(f"Commands Synced: {[command.name for command in synced]}")
     # For each cog in the /cog directory, load the cog
 
-@bot.tree.command(name="hello")
-async def hello(interaction: discord.Interaction):
-    await interaction.response.send_message("Hello")
-
 @bot.tree.command(name='sync', description='Owner only')
 async def sync(interaction: discord.Interaction):
     if isDeveloper:
@@ -37,7 +33,5 @@ async def sync(interaction: discord.Interaction):
         print(synced)
     else:
         await interaction.response.send_message('You must be the owner to use this command!')
-
-
 
 bot.run(TOKEN)

@@ -7,34 +7,33 @@ import discord
 from discord.ext import commands
 from getgif import get_gif
 from isDeveloper import isDeveloper
-
-###### NOT WORKING YET ######
+from discord import app_commands
 
 class Developer(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
 
-    # # Restart and shutdown functions for Developers
-    # def restart_bot(self): 
-    #     os.execv(sys.executable, ['python'] + sys.argv)
+    # Restart and shutdown functions for Developers
+    def restart_bot(self): 
+        os.execv(sys.executable, ['python'] + sys.argv)
 
-    # @commands.command(name='restart')
-    # async def restart(self, ctx):
-    #     if isDeveloper(ctx.author.id):
-    #         await ctx.send("Restarting bot...")
-    #         self.bot.close()
-    #         self.restart_bot()
-    #     await ctx.send(get_gif('you shall not pass', 25))
-    #     await ctx.send("You shall not pass!")
+    @app_commands.command(name='restart')
+    async def restart(self, interaction: discord.Interaction):
+        if isDeveloper(interaction.user.id):
+            await interaction.response.send_message("Restarting bot...")
+            self.bot.close()
+            self.restart_bot()
+        await interaction.response.send_message(get_gif('you shall not pass', 25))
+        await interaction.response.send_message("You shall not pass!")
 
-    # @commands.command(name='shutdown')
-    # async def stop(self, ctx):
-    #     if isDeveloper(ctx.author.id):
-    #         await ctx.send('Bot is now going offline...')
-    #         await ctx.bot.close()
-    #         quit()
-    #     await ctx.send(get_gif('you shall not pass', 25))
-    #     await ctx.send("You shall not pass!")
+    @app_commands.command(name='shutdown')
+    async def stop(self, interaction: discord.Interaction):
+        if isDeveloper(interaction.user.id):
+            await interaction.response.send_message('Bot is now going offline...')
+            await self.bot.close()
+            quit()
+        await interaction.response.send_message(get_gif('you shall not pass', 25))
+        await interaction.response.send_message("You shall not pass!")
 
 async def setup(bot):
     await bot.add_cog(Developer(bot))
