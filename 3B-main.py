@@ -32,8 +32,9 @@ async def hello(interaction: discord.Interaction):
 @bot.tree.command(name='sync', description='Owner only')
 async def sync(interaction: discord.Interaction):
     if isDeveloper:
-        await bot.tree.sync()
-        print('Command tree synced.')
+        synced = await bot.tree.sync()
+        print('Synced the following commands:')
+        print(synced)
     else:
         await interaction.response.send_message('You must be the owner to use this command!')
 
