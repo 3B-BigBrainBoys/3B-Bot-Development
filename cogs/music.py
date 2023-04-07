@@ -55,6 +55,14 @@ class Music(commands.Cog):
 #         guild = interaction.guild
 #         vc = guild.voice_client
 #         track_duration = str(datetime.timedelta(seconds=search.duration))
+    @app_commands.command(name='play')
+    async def play(self, interaction: discord.Interaction, track: str = None):
+        YTtrack = wavelink.YouTubeTrack
+        search = await YTtrack.convert(wavelink.YouTubeTrack, track)
+        
+        guild = interaction.guild
+        vc = guild.voice_client
+        track_duration = str(datetime.timedelta(seconds=search.duration))
         
 #         if not guild.voice_client:
 #             self.player=BotPlayer()
@@ -95,6 +103,19 @@ class Music(commands.Cog):
 #         guild = interaction.guild
 #         vc: BotPlayer = guild.voice_client
 #         await vc.stop()
+    # @app_commands.command('pause')
+    # async def pause(self, interaction: discord.Interaction):  
+    #     guild = interaction.guild
+    #     vc: BotPlayer = guild.voice_client
+    #     if vc:
+    #         if not vc.is_paused():
+    #             await vc.pause()
+
+    # @app_commands.command('skip')
+    # async def skip(self, interaction: discord.Interaction):
+    #     guild = interaction.guild
+    #     vc: BotPlayer = guild.voice_client
+    #     await vc.stop()
 
 
 async def setup(bot):
