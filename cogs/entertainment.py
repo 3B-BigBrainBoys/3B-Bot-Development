@@ -11,9 +11,9 @@ class Entertainment(commands.Cog):
     def __init__(self, bot):
         self.bot=bot
 
-    # @commands.command(name='gif')
-    # async def gif(self, ctx, arg, limit=50):
-    #     await ctx.send(get_gif(arg, limit))
+    @app_commands.command(name='gif')
+    async def gif(self, interaction: discord.Interaction, arg: str, limit: int=50):
+        await interaction.response.send_message(get_gif(arg, limit))
 
     # @commands.Cog.listener()
     # async def on_message(self,message):
