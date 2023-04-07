@@ -4,8 +4,6 @@ import wavelink
 import datetime
 from discord import app_commands
 
-###### NOT WORKING YET ######
-
 class BotPlayer(wavelink.Player):
     
     def __init__(self):
