@@ -4,42 +4,43 @@ from discord.ext import commands
 from discord.utils import get
 from discord import app_commands
 
-###### NOT WORKING YET ######
 
 class voice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # @commands.command()    
-    # async def join(self, ctx):
-    #     if ctx.voice_client != None:
-    #         await ctx.voice_client.move_to(ctx.author.voice.channel)
-    #     else:
-    #         channel = ctx.author.voice.channel
-    #         await channel.connect()
+    @app_commands.command(name="join")    
+    async def join(self, interaction: discord.Interaction):
+        guild = interaction.guild
+        if guild.voice_client != None:
+            await guild.voice_client.move_to(interaction.user.voice.channel)
+        else:
+            channel = interaction.user.voice.channel
+            await channel.connect()
 
-    # @commands.command()
-    # async def isoccupied(self, ctx):
-    #     if ctx.voice_client != None:
-    #         await ctx.send("Bot is in a channel")
-    #     else:
-    #         await ctx.send("Bot is not connected to a channel")
+    @app_commands.command(name='isoccupied')
+    async def isoccupied(self, interaction: discord.Interaction):
+        if interaction.guild.voice_client != None:
+            await interaction.response.send_message("Bot is in a channel")
+        else:
+            await interaction.response.send_message("Bot is not connected to a channel")
 
-    # @commands.command()
-    # async def leave(self, ctx):
-    #     if ctx.voice_client != None:
-    #         await ctx.voice_client.disconnect()
-    #     else:
-    #         await ctx.send("Bot is not in a channel...")
+    @app_commands.command(name='leave')
+    async def leave(self, interaction: discord.Interaction):
+        guild = interaction.guild
+        if guild.voice_client != None:
+            await guild.voice_client.disconnect()
+        else:
+            await interaction.response.send_message("Bot is not in a channel...")
 
-    # @commands.Cog.listener()
-    # async def on_voice_state_update(self, member, before, after):
-    #     vc = member.guild.voice_client
-    #     if not vc:
-    #         return
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        vc = member.guild.voice_client
+        if not vc:
+            return
         
-    #     if len(vc.channel.members) == 1:
-    #         await vc.disconnect()
+        if len(vc.channel.members) == 1:
+            await vc.disconnect()
 
 
 
