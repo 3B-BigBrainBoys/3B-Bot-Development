@@ -22,7 +22,7 @@ async def on_ready():
     [await bot.load_extension(f"cogs.{filename[:-3]}") for filename in os.listdir('./cogs') if filename.endswith('.py')]
     bot.tree.copy_global_to(guild=guild)
     synced = await bot.tree.sync(guild=guild)
-    print(f"Synced {synced}")
+    print(f"Commands Synced: {[command.name for command in synced]}")
     # For each cog in the /cog directory, load the cog
 
 @bot.tree.command(name="hello")

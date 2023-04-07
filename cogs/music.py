@@ -49,9 +49,9 @@ class Music(commands.Cog):
 
     @app_commands.command(name='play')
     async def play(self, interaction: discord.Interaction, track: str = None):
-        search = wavelink.YouTubeTrack
-        search = await search.search(track)
-        print(search)
+        YTtrack = wavelink.YouTubeTrack
+        search = await YTtrack.convert(wavelink.YouTubeTrack, track)
+        
         guild = interaction.guild
         vc = guild.voice_client
         track_duration = str(datetime.timedelta(seconds=search.duration))
