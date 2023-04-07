@@ -17,9 +17,9 @@ class Music(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.connect_nodes.start()
-        self.node: wavelink.Node = None
-        self.player = None
+        # self.connect_nodes.start()
+        # self.node: wavelink.Node = None
+        # self.player = None
 
     # @tasks.loop(count=1)
     # async def connect_nodes(self):
