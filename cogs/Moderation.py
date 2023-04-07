@@ -59,10 +59,9 @@ class Moderation(commands.Cog):
     @app_commands.command(name='mute')
     async def mute(self,interaction: discord.Interaction, member: discord.Member = None,
                    reason: str = None,duration:float = None):
-        if isDeveloper(interaction.user):   
-            await discord.InteractionResponse.defer(
-                member.timeout(timedelta(seconds=duration),reason=reason),
-                ephemeral=False,thinking=True)
+        await interaction.response.defer(ephemeral=False,thinking=False)
+        if isDeveloper(interaction.user):
+            await member.timeout(timedelta(seconds=duration),reason=reason)
             await interaction.followup.send(embed = discord.Embed(
                 title=f"{member.name} has been muted for",
                 description=f"{duration} seconds\nReason: {reason}"
