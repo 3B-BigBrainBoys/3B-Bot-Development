@@ -1,10 +1,12 @@
 # Returns if user is a dev
 
 from dotenv import load_dotenv
+import os
 
 
 def isDeveloper(id):
     load_dotenv()
-    if id in [261662217424994306, 270711617686208513, 252514565001052160]:
+    ids = [int(id) for id in os.getenv('DEV_IDS').split(',')]
+    if id in ids:
         return True
     return False

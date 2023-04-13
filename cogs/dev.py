@@ -13,19 +13,6 @@ class Developer(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
 
-    # Restart and shutdown functions for Developers
-    def restart_bot(self): 
-        os.execv(sys.executable, ['python'] + sys.argv)
-
-    @app_commands.command(name='restart')
-    async def restart(self, interaction: discord.Interaction):
-        if isDeveloper(interaction.user.id):
-            await interaction.response.send_message("Restarting bot...")
-            self.bot.close()
-            self.restart_bot()
-        await interaction.response.send_message(get_gif('you shall not pass', 25))
-        await interaction.response.send_message("You shall not pass!")
-
     @app_commands.command(name='shutdown')
     async def stop(self, interaction: discord.Interaction):
         if isDeveloper(interaction.user.id):
