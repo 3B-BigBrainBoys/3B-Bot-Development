@@ -4,6 +4,13 @@ import wavelink
 import datetime
 from discord import app_commands
 
+def ms_to_hms(milliseconds):
+    seconds, milliseconds = divmod(milliseconds, 1000)
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    return '{:02d}:{:02d}:{:02d}'.format(hours, minutes, seconds)
+
+
 class BotPlayer(wavelink.Player):
     
     def __init__(self):
@@ -23,8 +30,10 @@ class Music(commands.Cog):
     async def connect_nodes(self):
         """Connect to our Lavalink nodes."""
         await self.bot.wait_until_ready()
-        # Wavelink 2.0 has made connecting Nodes easier... Simply create each Node
-        # and pass it to NodePool.connect with the client/bot.
+        """
+        Wavelink 2.0 has made connecting Nodes easier... Simply create each Node
+        and pass it to NodePool.connect with the client/bot.
+        """
         self.node: wavelink.Node = wavelink.Node(
             uri='ec2-3-145-16-12.us-east-2.compute.amazonaws.com:2033', 
             password='youtube3B'
@@ -53,7 +62,7 @@ class Music(commands.Cog):
         
         guild = interaction.guild
         vc = guild.voice_client
-        track_duration = str(datetime.timedelta(seconds=search.duration))
+        track_duration = ms_to_hms(search.duration)
         
         if not guild.voice_client:
             self.player=BotPlayer()

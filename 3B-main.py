@@ -27,7 +27,7 @@ async def on_ready():
 
 @bot.tree.command(name='sync', description='Owner only')
 async def sync(interaction: discord.Interaction):
-    if isDeveloper == True:
+    if isDeveloper(interaction.user.id) == True:
         synced = await bot.tree.sync()
         print('Synced the following commands:')
         print(synced)
