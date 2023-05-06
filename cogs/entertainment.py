@@ -26,30 +26,37 @@ class Entertainment(commands.Cog):
             await message.channel.send(get_gif('uwu anime', 20))
             await message.channel.send("x3 *nuzzles*")
 
-    # @commands.command(name='rolldice')
-    # async def dice(self, ctx, sides=6, amount=1):
-    #     if sides < 4:
-    #         await ctx.send(
-    #         '''Please enter 4 or more sides (default = 6).
-    # Command syntax: $dice [sides] [dice]''')
-    #     elif amount < 1:
-    #         await ctx.send(
-    #             '''Please enter 1 or more dice (default 1).'''
-    #         )
-    #     else:
-    #         await ctx.send('Rolling a %s sided die %d time(s)...' % (sides, amount))
-    #         s = ""
-    #         for i in range(amount):
-    #             newNum = (random.randrange(1, sides + 1))
-    #             s += str(newNum) + " "
-    #         await ctx.send(s)
+    @app_commands.command(name='rolldice',description="Rolls a dice based on specified size and amount of dice")
+    async def dice(self, interaction: discord.Interaction, sides: int = 6, amount: int = 1):
+        if sides < 4:
+            await interaction.response.send_message(
+            '''Please enter 4 or more sides (default = 6).
+    Command syntax: /rolldice [sides] [dice]''')
+        elif amount < 1:
+            await interaction.response.send_message(
+                '''Please enter 1 or more dice (default 1).'''
+            )
+        else:
+            await interaction.response.send_message('Rolling a %s sided die %d time(s)...' % (sides, amount))
+            s = ""
+            for i in range(amount):
+                newNum = (random.randrange(1, sides + 1))
+                s += str(newNum) + " "
+            await interaction.response.send_message(s)
 
     # @dice.error
-    # async def dice_error(self, ctx, error):
-    #     await ctx.send("Please use smaller numbers and keep entries as integers.")
+    # async def dice_error(self, interaction: discord.Interaction, error):
+    #     await interaction.response.send_message("Please use smaller numbers and keep entries as integers.")
 
     #Rock paper scissors game
 
+    # @commands.command(name='RPS')
+    # async def rps(self, interaction: discord.Interaction):
+        
+    #     msg = await interaction.response.send_message(embed = discord.Embed(title='Rock, Paper, Scissors...'))
+    #     reactions = ['🪨','📰','✂️']
+    #     for emoji in reactions: 
+    #         await msg.add_reaction(emoji)
     @app_commands.command(name='rps')
     async def rps(self, interaction: discord.Interaction):
         
@@ -60,6 +67,9 @@ class Entertainment(commands.Cog):
 
         botmove = random.choice(reactions)
 
+    #     def check(reaction, user):
+    #         return user == interaction: discord.Interaction.author and str(reaction.emoji) in reactions
+    #     reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
         def check(reaction, user):
             return user == interaction.user and str(reaction.emoji) in reactions
         reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
