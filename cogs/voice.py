@@ -17,6 +17,7 @@ class voice(commands.Cog):
         else:
             channel = interaction.user.voice.channel
             await channel.connect()
+        await interaction.response.send_message(f'Joining channel: {channel}', delete_after=3.0)
 
     @app_commands.command(name='isoccupied')
     async def isoccupied(self, interaction: discord.Interaction):
@@ -30,6 +31,7 @@ class voice(commands.Cog):
         guild = interaction.guild
         if guild.voice_client != None:
             await guild.voice_client.disconnect()
+            await interaction.response.send_message('Goodbye!', delete_after=1.0)
         else:
             await interaction.response.send_message("Bot is not in a channel...")
 

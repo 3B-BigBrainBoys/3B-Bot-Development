@@ -49,7 +49,7 @@ class Entertainment(commands.Cog):
     # async def dice_error(self, interaction: discord.Interaction, error):
     #     await interaction.response.send_message("Please use smaller numbers and keep entries as integers.")
 
-    #Rock paper scissors game
+    # Rock paper scissors game
 
     # @commands.command(name='RPS')
     # async def rps(self, interaction: discord.Interaction):
