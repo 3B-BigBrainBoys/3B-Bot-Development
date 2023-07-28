@@ -12,7 +12,7 @@ class Misc(commands.Cog):
     @app_commands.command(name='echo')
     @app_commands.describe(msg = 'User message to echo')
     async def echo(self, interaction: discord.Interaction, msg: str):
-        msg = ' '.join(msg)
+        # msg = ''.join(msg)
         await interaction.response.send_message(msg)
 
     @app_commands.command(name = 'whoami',description="Just in case you forgot your name")

@@ -14,7 +14,8 @@ class Developer(commands.Cog):
         self.bot=bot
 
     @app_commands.command(name='shutdown')
-    async def stop(self, interaction: discord.Interaction):
+    async def shutdown(self, interaction: discord.Interaction):
+        print(interaction.user.id)
         if isDeveloper(interaction.user.id):
             await interaction.response.send_message('Bot is now going offline...')
             await self.bot.close()

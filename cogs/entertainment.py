@@ -13,7 +13,7 @@ class Entertainment(commands.Cog):
         self.bot=bot
 
     @app_commands.command(name='gif')
-    async def gif(self, interaction: discord.Interaction, arg: str, limit: int=50):
+    async def gif(self, interaction: discord.Interaction, arg: str, limit: int=10):
         await interaction.response.send_message(get_gif(arg, limit))
 
     @commands.Cog.listener()
@@ -21,11 +21,6 @@ class Entertainment(commands.Cog):
         if '69' in message.content and message.author.id !=1077964909318508564:
             await message.channel.send(get_gif('69 nice', 20))
             await message.channel.send("Nice.")
-        if 'Good morning Experimental Bot' in message.content and message.author.id !=1077964909318508564:
-            await message.channel.send("Good morning.")
-        if 'rawr' in message.content and message.author.id !=1077964909318508564:
-            await message.channel.send(get_gif('uwu anime', 20))
-            await message.channel.send("x3 *nuzzles*")
 
     # @app_commands.command(name='rolldice',description="Rolls a dice based on specified size and amount of dice")
     # async def dice(self, interaction: discord.Interaction, sides: int = 6, amount: int = 1):

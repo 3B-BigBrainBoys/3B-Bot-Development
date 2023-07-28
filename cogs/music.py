@@ -54,6 +54,7 @@ class Music(commands.Cog):
             next_track = self.player.queue.get()
             await self.player.play(next_track)
 
+
     @app_commands.command(name='play')
     async def play(self, interaction: discord.Interaction, track: str = None):
         if track != None:
