@@ -58,34 +58,39 @@ class Music(commands.Cog):
         """Event fired when a node has finished connecting."""
         print(f'Node: <{node.id}> is ready!')
 
-    @app_commands.command(name='connect')
-    async def connect(self, interaction: discord.Interaction, channel: discord.VoiceChannel | None = None):
+    async def connect_to_channel(self, interaction: discord.Interaction, channel: discord.VoiceChannel | None = None):
         try:
             self.channel = channel or interaction.user.voice.channel
         except:
-            return await interaction.response.send('No voice channel to connect to. Please join a voice channel or name one then execute the command again.')
+            return await interaction.response.send_message('No voice channel to connect to. Please join a voice channel or name one then execute the command again.')
         
         self.player = Player()
         vc: Player = await self.channel.connect(cls=self.player)
 
         return vc
     
+    async def create_track(self, searchterm):
+        yttrack = wavelink.YouTubeTrack
+        return await yttrack.convert(wavelink.YouTubeTrack, searchterm)
+
+    @app_commands.command(name='connect')
+    async def connect(self, interaction: discord.Interaction, channel: discord.VoiceChannel | None = None):
+        await self.connect_to_channel(interaction, channel)
+        await interaction.response.send_message(f'Joined voice channel: {self.channel}')
+    
     @app_commands.command(name='play')
-    async def play(self, interaction: discord.Interaction, channel: discord.VoiceChannel | None = None):
-            if self.channel != None:
-                try:
-                    self.channel = channel or interaction.user.voice.channel
-                except AttributeError:
-                    return await interaction.response.send('No voice channel to connect to. Please join a voice channel or name one then execute the command again.')
-            
-            else:
-                self.player = Player()
-                vc: Player = await self.channel.connect(cls=self.player)
+    async def play(self, interaction: discord.Interaction, track: str):
+            if self.channel is None:
+                await self.connect_to_channel(interaction)
+            song = await self.create_track(track)
+            await self.player.play(song)
+            await interaction.response.send_message('Success')
     
     @app_commands.command(name='skip')
     async def skip(self, interaction: discord.Interaction):
         guild = interaction.guild
         vc: Player = guild.voice_client
+        await interaction.response.send_message('Playing next song')
         await vc.stop()
 
     @app_commands.command(name='pause')
@@ -95,6 +100,13 @@ class Music(commands.Cog):
         if vc:
             if not vc.is_paused():
                 await vc.pause()
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        vc = member.guild.voice_client
+        if not vc:
+            self.player = None
+    
 
 
     # @commands.Cog.listener()
