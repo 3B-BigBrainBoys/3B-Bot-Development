@@ -76,7 +76,16 @@ class Music(commands.Cog):
     @app_commands.command(name='connect')
     async def connect(self, interaction: discord.Interaction, channel: discord.VoiceChannel | None = None):
         await self.connect_to_channel(interaction, channel)
-        await interaction.response.send_message(f'Joined voice channel: {self.channel}')
+        await interaction.response.send_message(f'Joined voice channel: {self.channel}', delete_after=3.0)
+
+    @app_commands.command(name='disconnect')
+    async def disconnect(self, interaction: discord.Interaction):
+        guild = interaction.guild
+        if guild.voice_client != None:
+            await guild.voice_client.disconnect()
+            await interaction.response.send_message('Goodbye!', delete_after=3.0)
+        else:
+            await interaction.response.send_message("Bot is not in a channel...", delete_after=3.0)
     
     @app_commands.command(name='play')
     async def play(self, interaction: discord.Interaction, track: str):
@@ -101,11 +110,14 @@ class Music(commands.Cog):
             if not vc.is_paused():
                 await vc.pause()
 
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member, before, after):
-        vc = member.guild.voice_client
-        if not vc:
-            self.player = None
+    # Function listens for the bot's voice status to update
+    # If the state is a channel disconnect, it sets the bots active channel to None
+    @commands.Cog.listener(name='Reset self.channel')
+    async def on_voice_state_update(self, member: discord.member, before, after):
+        if member.id == 1077964909318508564:
+            vc = member.guild.voice_client
+            if vc is None:
+                self.channel = None
     
 
 

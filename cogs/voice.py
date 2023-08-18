@@ -35,14 +35,14 @@ class voice(commands.Cog):
         else:
             await interaction.response.send_message("Bot is not in a channel...")
 
-    @commands.Cog.listener()
-    async def on_voice_state_update(self, member, b, a):
-        vc = member.guild.voice_client
-        if not vc:
-            return
+    # @commands.Cog.listener()
+    # async def on_voice_state_update(self, member, b, a):
+    #     vc = member.guild.voice_client
+    #     if not vc:
+    #         return
         
-        if len(vc.channel.members) == 1:
-            await vc.disconnect()
+    #     if len(vc.channel.members) == 1:
+    #         await vc.disconnect()
 
 
 
