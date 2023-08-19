@@ -26,7 +26,7 @@ class Music(commands.Cog):
         self.connect_nodes.start()
         self.node: wavelink.Node = None
         self.player = None
-        self.channel = None
+        self.channels = []
     
 
     # async def queued_track(self, interaction, track, vc, duration):
@@ -59,13 +59,15 @@ class Music(commands.Cog):
         print(f'Node: <{node.id}> is ready!')
 
     async def connect_to_channel(self, interaction: discord.Interaction, channel: discord.VoiceChannel | None = None):
+        if interaction.guild.voice_client != None:
+            return await self.player.move_to(channel)
         try:
-            self.channel = channel or interaction.user.voice.channel
+            channel = channel or interaction.user.voice.channel
         except:
             return await interaction.response.send_message('No voice channel to connect to. Please join a voice channel or name one then execute the command again.')
         
         self.player = Player()
-        vc: Player = await self.channel.connect(cls=self.player)
+        vc: Player = await channel.connect(cls=self.player)
 
         return vc
     
@@ -76,7 +78,7 @@ class Music(commands.Cog):
     @app_commands.command(name='connect')
     async def connect(self, interaction: discord.Interaction, channel: discord.VoiceChannel | None = None):
         await self.connect_to_channel(interaction, channel)
-        await interaction.response.send_message(f'Joined voice channel: {self.channel}', delete_after=3.0)
+        await interaction.response.send_message(f'Joined voice channel: {channel}', delete_after=3.0)
 
     @app_commands.command(name='disconnect')
     async def disconnect(self, interaction: discord.Interaction):
@@ -89,7 +91,7 @@ class Music(commands.Cog):
     
     @app_commands.command(name='play')
     async def play(self, interaction: discord.Interaction, track: str):
-            if self.channel is None:
+            if interaction.guild.voice_client is None:
                 await self.connect_to_channel(interaction)
             song = await self.create_track(track)
             await self.player.play(song)
@@ -99,7 +101,7 @@ class Music(commands.Cog):
     async def skip(self, interaction: discord.Interaction):
         guild = interaction.guild
         vc: Player = guild.voice_client
-        await interaction.response.send_message('Playing next song')
+        await interaction.response.send_message('Playing next song', delete_after=3.0)
         await vc.stop()
 
     @app_commands.command(name='pause')
@@ -112,12 +114,12 @@ class Music(commands.Cog):
 
     # Function listens for the bot's voice status to update
     # If the state is a channel disconnect, it sets the bots active channel to None
-    @commands.Cog.listener(name='Reset self.channel')
-    async def on_voice_state_update(self, member: discord.member, before, after):
-        if member.id == 1077964909318508564:
-            vc = member.guild.voice_client
-            if vc is None:
-                self.channel = None
+    # @commands.Cog.listener(name='Reset self.channel')
+    # async def on_voice_state_update(self, member: discord.member, before, after):
+    #     if member.id == 1077964909318508564:
+    #         vc = member.guild.voice_client
+    #         if vc is None:
+    #             self.channel = None
     
 
 
