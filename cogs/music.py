@@ -15,7 +15,6 @@ class Player(wavelink.Player):
     
     def __init__(self):
         super().__init__()
-        self.queue = wavelink.Queue()
 
 
 class Music(commands.Cog):
@@ -94,8 +93,25 @@ class Music(commands.Cog):
             if interaction.guild.voice_client is None:
                 await self.connect_to_channel(interaction)
             song = await self.create_track(track)
-            await self.player.play(song)
-            await interaction.response.send_message('Success')
+
+            if self.player.is_playing():
+                self.player.queue.put(song)
+                await interaction.response.send_message('Added to queue')
+            else:
+                await self.player.play(song)
+                await interaction.response.send_message('Playing song')
+
+    @app_commands.command(name='queue')
+    async def queue(self, interaction: discord.Interaction):
+        await interaction.response.send_message(str(self.player.queue.copy()), delete_after=60.0)
+
+    @app_commands.command(name='next')
+    async def next(self, interaction: discord.Interaction):
+        await interaction.response.send_message(f'Next song in queue: {str(self.player.queue.get())}', delete_after=5.0)
+
+    @app_commands.command(name='shuffle')
+    async def shuffle(self, interaction: discord.Interaction):
+        await interaction.response.send_message(f'Shuffled queue:\n{str(self.player.queue.copy())}', delete_after=60.0)
     
     @app_commands.command(name='skip')
     async def skip(self, interaction: discord.Interaction):
