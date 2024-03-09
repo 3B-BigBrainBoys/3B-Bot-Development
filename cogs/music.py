@@ -98,7 +98,7 @@ class Music(commands.Cog):
             track_duration = ms_to_hms(song.duration)
 
             if self.player.is_playing():
-                self.player.auto_queue.put(song)
+                self.player.queue.put(song)
                 await interaction.response.send_message(embed=discord.Embed(
                 title=song.title,
                 url=song.uri,
@@ -112,39 +112,42 @@ class Music(commands.Cog):
                     description = f"Now playing {song.title} in {self.player.channel}. \nDuration: {track_duration}"
             ))
 
-    @app_commands.command(name='radio')
-    async def radio(self, interaction: discord.Interaction, track: str):
-        if interaction.guild.voice_client is None:
-            await self.connect_to_channel(interaction)
-            song = await self.create_track(track)
+    # @app_commands.command(name='radio')
+    # async def radio(self, interaction: discord.Interaction, track: str):
+    #     if interaction.guild.voice_client is None:
+    #         await self.connect_to_channel(interaction)
+    #         song = await self.create_track(track)
 
-            if self.player.is_playing():
-                self.player.auto_queue.put(song)
-                await interaction.response.send_message(f'Adding songs similar to {track} to the queue')
-            else:
-                await self.player.play(song, populate=True)
-                await interaction.response.send_message(f'Playing and adding songs similar to {track} to the queue')
+    #         if self.player.is_playing():
+    #             self.player.queue.put(song)
+    #             await interaction.response.send_message(f'Adding songs similar to {track} to the queue')
+    #         else:
+    #             await self.player.play(song, populate=True)
+    #             await interaction.response.send_message(f'Playing and adding songs similar to {track} to the queue')
 
     @app_commands.command(name='queue')
     async def queue(self, interaction: discord.Interaction):
-        if self.player.auto_queue.is_empty:
+        if self.player.queue.is_empty:
             return await interaction.response.send_message('The player queue is empty', delete_after=3.0)
-        embed: discord.Embed = await self.format_queue(self.player.auto_queue, title='Current Queue')
+        embed: discord.Embed = await self.format_queue(self.player.queue, title='Current Queue')
         await interaction.response.send_message(embed=embed, delete_after=20.0)
 
     @app_commands.command(name='cqueue')
     async def cqueue(self, interaction: discord.Interaction):
-        self.player.auto_queue.reset()
+        self.player.queue.reset()
         await interaction.response.send_message("Queue has been cleared")
 
     @app_commands.command(name='next')
     async def next(self, interaction: discord.Interaction):
-        await interaction.response.send_message(f'Next song in queue: {str(self.player.auto_queue.get())}', delete_after=5.0)
+        if not self.player.queue.is_empty:
+            await interaction.response.send_message(f'Next song in queue: {str(self.player.queue.get())}', delete_after=5.0)
+        else:
+            await interaction.response.send_message('Current queue is empty')
 
     @app_commands.command(name='shuffle')
     async def shuffle(self, interaction: discord.Interaction):
-        self.player.auto_queue.shuffle()
-        embed: discord.Embed = await self.format_queue(self.player.auto_queue, title='Shuffled Queue')
+        self.player.queue.shuffle()
+        embed: discord.Embed = await self.format_queue(self.player.queue, title='Shuffled Queue')
         await interaction.response.send_message(embed=embed, delete_after=20.0)
     
     @app_commands.command(name='skip')
