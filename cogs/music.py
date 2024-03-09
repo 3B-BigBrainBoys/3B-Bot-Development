@@ -33,14 +33,14 @@ class Music(commands.Cog):
         await self.bot.wait_until_ready()
         """
         Wavelink 2.0 has made connecting Nodes easier... Simply create each Node
-        and pass it to NodePool.connect with the client/bot.
+        and pass it to Pool.connect with the client/bot.
         """
         self.node: wavelink.Node = wavelink.Node(
             uri='localhost:2033', 
             password='youtube3B'
             )
-        await wavelink.NodePool.connect(client=self.bot, nodes=[self.node])
-        self.node = wavelink.NodePool.get_node()
+        await wavelink.Pool.connect(client=self.bot, nodes=[self.node])
+        self.node = wavelink.Pool.get_node()
 
 
     @commands.Cog.listener()
