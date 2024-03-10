@@ -31,22 +31,14 @@ class Music(commands.Cog):
     async def connect_nodes(self):
         """Connect to our Lavalink nodes."""
         await self.bot.wait_until_ready()
-        """
-        Wavelink 2.0 has made connecting Nodes easier... Simply create each Node
-        and pass it to Pool.connect with the client/bot.
-        """
-        self.node: wavelink.Node = wavelink.Node(
-            uri='localhost:2033', 
-            password='youtube3B'
-            )
-        await wavelink.Pool.connect(client=self.bot, nodes=[self.node])
-        self.node = wavelink.Pool.get_node()
+        nodes = [wavelink.Node(uri='http://localhost:2333', password='youtube3B')]
+        await wavelink.Pool.connect(nodes=nodes, client=self.bot, cache_capacity=100)
 
 
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
         """Event fired when a node has finished connecting."""
-        print(f'Node: <{node.id}> is ready!')
+        print(f'Node: <{node.session_id}> is ready!')
 
     async def connect_to_channel(self, interaction: discord.Interaction, channel: discord.VoiceChannel | None = None):
         if interaction.guild.voice_client != None:
@@ -57,14 +49,10 @@ class Music(commands.Cog):
             return await interaction.response.send_message('No voice channel to connect to. Please join a voice channel or name one then execute the command again.')
         
         self.player = Player()
-        self.player.autoplay = True
         vc: Player = await channel.connect(cls=self.player)
 
         return vc
-    
-    async def create_track(self, searchterm):
-        yttrack = wavelink.YouTubeTrack
-        return await yttrack.convert(wavelink.YouTubeTrack, searchterm)
+
     
     async def format_queue(self, queue, title):
         count = 1
@@ -91,39 +79,55 @@ class Music(commands.Cog):
             await interaction.response.send_message("Bot is not in a channel...", delete_after=3.0)
     
     @app_commands.command(name='play')
-    async def play(self, interaction: discord.Interaction, track: str):
+    async def play(self, interaction: discord.Interaction, searchterm: str):
             if interaction.guild.voice_client is None:
                 await self.connect_to_channel(interaction)
-            song = await self.create_track(track)
-            track_duration = ms_to_hms(song.duration)
+            
+            tracks: wavelink.Search = await wavelink.Playable.search(searchterm)
 
-            if self.player.is_playing():
-                self.player.queue.put(song)
-                await interaction.response.send_message(embed=discord.Embed(
-                title=song.title,
-                url=song.uri,
-                description = f"Queued {song.title} in {self.player.channel}. \nDuration: {track_duration}"
-            ))
-            else:
-                await self.player.play(song)
-                await interaction.response.send_message(embed=discord.Embed(
+            if not tracks:
+                interaction.response.send_message("Track not found")
+                return
+            
+            if self.player.playing:
+
+                if isinstance(tracks, wavelink.Playlist):
+                    added: int = await self.player.queue.put_wait(tracks)
+                    await interaction.response.send_message(embed=discord.Embed(
+                        title="Playlist Added",
+                        url="",
+                        description=f"Queued playlist '{tracks.name}' ({added} songs) to the queue"
+                    ))
+
+                else:
+                    song = tracks[0]
+                    await self.player.queue.put_wait(song)
+                    await interaction.response.send_message(embed=discord.Embed(
                     title=song.title,
                     url=song.uri,
-                    description = f"Now playing {song.title} in {self.player.channel}. \nDuration: {track_duration}"
-            ))
+                    description = f"Queued {song.title} in {self.player.channel}. \nDuration: {ms_to_hms(song.length)}"
+                    ))
+                    
+            else:
 
-    # @app_commands.command(name='radio')
-    # async def radio(self, interaction: discord.Interaction, track: str):
-    #     if interaction.guild.voice_client is None:
-    #         await self.connect_to_channel(interaction)
-    #         song = await self.create_track(track)
+                if isinstance(tracks, wavelink.Playlist):
+                    song = tracks[0]
+                    added: int = await self.player.queue.put_wait(tracks[1:])
+                    await self.player.play(song)
+                    await interaction.response.send_message(embed=discord.Embed(
+                    title=song.title,
+                    url=song.uri,
+                    description = f"Playlist tracks queued ({added} songs).\nNow playing {song.title} in {self.player.channel}.\nDuration: {ms_to_hms(song.length)}"
+                    ))
 
-    #         if self.player.is_playing():
-    #             self.player.queue.put(song)
-    #             await interaction.response.send_message(f'Adding songs similar to {track} to the queue')
-    #         else:
-    #             await self.player.play(song, populate=True)
-    #             await interaction.response.send_message(f'Playing and adding songs similar to {track} to the queue')
+                else:
+                    song = tracks[0]
+                    await self.player.play(song)
+                    await interaction.response.send_message(embed=discord.Embed(
+                    title=song.title,
+                    url=song.uri,
+                    description = f"Now playing {song.title} in {self.player.channel}. \nDuration: {ms_to_hms(song.length)}"
+                ))
 
     @app_commands.command(name='queue')
     async def queue(self, interaction: discord.Interaction):
@@ -159,14 +163,14 @@ class Music(commands.Cog):
 
     @app_commands.command(name='pause')
     async def pause(self, interaction: discord.Interaction):  
-        if self.player.is_playing():
-            await self.player.pause()
+        if self.player.playing:
+            await self.player.pause(True)
             await interaction.response.send_message('Track has been paused', delete_after=3.0)
 
     @app_commands.command(name='resume')
     async def resume(self, interaction: discord.Interaction):
-        if self.player.is_paused():
-            await self.player.resume()
+        if self.player.paused:
+            await self.player.pause(False)
             await interaction.response.send_message('Resumed current track', delete_after=3.0)
         else:
             await interaction.response.send_message('Track is already playing', delete_after=3.0)
