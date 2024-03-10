@@ -175,6 +175,19 @@ class Music(commands.Cog):
         else:
             await interaction.response.send_message('Track is already playing', delete_after=3.0)
 
+    # @app_commands.command(name='autoplay')
+    # async def autoplay(self, interaction: discord.Interaction):
+    #     wavelink.AutoPlayMode(self.player.autoplay)
+
+    @app_commands.command(name="current")
+    async def current(self, interaction: discord.Interaction):
+        song = self.player.current
+        await interaction.response.send_message(embed=discord.Embed(
+                title=song.title,
+                url=song.uri,
+                description = f"Current track: {song.title}"
+                ))
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, b, a):
         vc = member.guild.voice_client
