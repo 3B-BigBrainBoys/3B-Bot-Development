@@ -15,7 +15,7 @@ class Player(wavelink.Player):
     
     def __init__(self):
         super().__init__()
-
+        
 
 class Music(commands.Cog):
     """Music cog to hold Wavelink related commands and listeners."""
@@ -156,10 +156,8 @@ class Music(commands.Cog):
     
     @app_commands.command(name='skip')
     async def skip(self, interaction: discord.Interaction):
-        guild = interaction.guild
-        vc: Player = guild.voice_client
         await interaction.response.send_message('Playing next song', delete_after=3.0)
-        await vc.stop()
+        await self.player.skip()
 
     @app_commands.command(name='pause')
     async def pause(self, interaction: discord.Interaction):  
@@ -182,11 +180,20 @@ class Music(commands.Cog):
     @app_commands.command(name="current")
     async def current(self, interaction: discord.Interaction):
         song = self.player.current
-        await interaction.response.send_message(embed=discord.Embed(
-                title=song.title,
-                url=song.uri,
-                description = f"Current track: {song.title}"
-                ))
+        if not song:
+            await interaction.response.send_message("No song is playing.")
+        else:
+            await interaction.response.send_message(embed=discord.Embed(
+                    title=song.title,
+                    url=song.uri,
+                    description = f"Current track: {song.title}"
+                    ))
+            
+    @commands.Cog.listener()
+    async def on_wavelink_track_end(self, reason):
+        if not self.player. queue.is_empty:
+            next_song = self.player.queue.get()
+            await self.player.play(next_song)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, b, a):
@@ -197,14 +204,6 @@ class Music(commands.Cog):
         if len(vc.channel.members) == 1:
             await vc.disconnect()
 
-    # Function listens for the bot's voice status to update
-    # If the state is a channel disconnect, it sets the bots active channel to None
-    # @commands.Cog.listener(name='Reset self.channel')
-    # async def on_voice_state_update(self, member: discord.member, before, after):
-    #     if member.id == 1077964909318508564:
-    #         vc = member.guild.voice_client
-    #         if vc is None:
-    #             self.player = None
 
 async def setup(bot):
     await bot.add_cog(Music(bot))
