@@ -8,6 +8,7 @@ from discord import app_commands
 from isDeveloper import isDeveloper
 
 load_dotenv()
+
 TOKEN = os.getenv('RELEASE_TOKEN')
 
 intents = discord.Intents.all()
